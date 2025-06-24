@@ -1,0 +1,86 @@
+
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Festa de Aniversário</title>
+    <link href="https://fonts.googleapis.com/css2?family=Birthstone&family=Montserrat:wght@400;700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dist/css/main.css">
+</head>
+<body>
+    <header class="header">
+        <h1>TE AMO</h1>
+    </header>
+    <!-- Hero Section com Carrossel e Frases -->
+    <section class="hero">
+        <div class="carousel-container">
+            <div class="carousel">
+                <div class="carousel-slide" style="background-image: url('./dist/images/Maxton-Hall.jpg')"></div>
+                <div class="carousel-slide" style="background-image: url('./dist/images/twilight-2-2fc1097d2074442f8dd41b0d78abbe70.webp')"></div>
+                <div class="carousel-slide" style="background-image: url('./dist/images/stranger_things_1200x630-min.png')"></div>
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-btn active"></button>
+                <button class="carousel-btn"></button>
+                <button class="carousel-btn"></button>
+            </div>
+        </div>
+        <div class="quotes">
+            <div class="quote active">
+                "Poise tem alguem bem anciosa, então fiz este contador para você minha linda te amo."
+                <div class="author">- Henrique Seu Amor</div>
+            </div>
+            <div class="quote">
+                "Meu amor é algo somples mas espero que traga boas memórias de nós assistindo juntinhos."
+                <div class="author">- Henrique Seu Amor</div>
+            </div>
+            <div class="quote">
+                "Nosso fim de ano vai ser mais que especial."
+                <div class="author">- Henrique Seu Amor</div>
+            </div>
+        </div>
+    </section>
+    <!-- Seção de Parabéns e Contador -->
+    <section class="congrats-section">
+        <h1 class="congrats-title">Parabéns!</h1>
+        <p class="congrats-message">
+            Você é uma guerreira meu amor linda e determinda e uma excelente professora, esposa e amiga te amo
+        </p>
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Dias</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Horas</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutos</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Segundos</div>
+            </div>
+        </div>
+        <div class="special-message" id="specialMessage">
+            Feliz aniversário meu amor espero que tenha adorado este mês fiz de tudo para ser especial, queria poder gastar assim todo mês ahah um dia vai ser assim.<br>
+            Meu amor do fundo do meu coração te amo mais que tudo sou pessimo escrevendo entao releva te amo tanto que ate transborda!
+        </div>
+    </section>
+    <audio id="backgroundMusic" loop>
+    <source src="./dist/audio/Alex Warren - Ordinary (Official Video).mp3" type="audio/mpeg">
+    Seu navegador não suporta o elemento de áudio.
+</audio>
+<div id="music-controls">
+    <button id="play-pause-btn"><i class="fas fa-play"></i></button>
+    <div id="volume-container">
+        <i class="fas fa-volume-up"></i>
+        <input type="range" min="0" max="1" step="0.1" value="0.3" id="volume-slider">
+    </div>
+</div>
+    <script src="dist/js/main.js"></script>
+</body>
+</html>

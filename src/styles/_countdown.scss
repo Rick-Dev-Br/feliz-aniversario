@@ -1,0 +1,57 @@
+@use 'variables' as v;
+
+.countdown {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    min-width: 140px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    @media (max-width: v.$tablet) {
+        min-width: 100px;
+        padding: 15px;
+    }
+
+    @media (max-width: v.$mobile) {
+        min-width: 70px;
+        padding: 10px;
+    }
+}
+
+.countdown-number {
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: v.$gold;
+
+    @media (max-width: v.$tablet) {
+        font-size: 2.5rem;
+    }
+
+    @media (max-width: v.$mobile) {
+        font-size: 2rem;
+    }
+}
+
+.countdown-label {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+
+    @media (max-width: v.$mobile) {
+        font-size: 0.9rem;
+    }
+}

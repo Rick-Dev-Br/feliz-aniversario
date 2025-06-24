@@ -1,0 +1,14 @@
+@use 'variables';
+
+// 2. Importe RESET depois (que usará as variáveis)
+@use 'reset';
+
+// 3. Demais imports
+@use 'animations';
+@use 'hero';
+@use 'carousel';
+@use 'quotes';
+@use 'countdown';  
+@use 'fireworks';
+@use 'header';
+@use 'music'; 

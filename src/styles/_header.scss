@@ -1,0 +1,21 @@
+@use 'animations' as v;
+
+.header {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente */
+    height: 20vh;           /* Altura adequada para visualização */
+    background: linear-gradient(135deg, #1a2a6c, #e6badd, #988252); /* Gradiente bonito */
+    text-align: center;      /* Centralização adicional para texto */
+    padding: 20px;           /* Espaçamento interno */
+    
+    h1 {
+        font-family: 'Birthstone', cursive; /* Fonte especial */
+        font-size: 5rem;      /* Tamanho grande */
+        color: #ffd700;       /* Cor dourada */
+        text-shadow: 0 0 20px rgba(0, 0, 0, 0.7); /* Sombra para destaque */
+        margin: 0;            /* Remove margens padrão */
+        padding: 0;           /* Remove paddings padrão */
+        animation: pulse 2s infinite; /* Animação suave */
+    }
+}

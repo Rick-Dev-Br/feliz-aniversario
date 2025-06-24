@@ -1,0 +1,104 @@
+
+
+/* =============================================
+   RESET GLOBAL
+   ============================================= */
+
+/**
+ * 1. Reset de margens e paddings para todos elementos
+ * 2. Modelo de caixa mais intuitivo
+ * 3. Remoção de estilos padrão de listas
+ * 4. Definições base para tipografia
+ * 5. Correções para elementos de mídia
+ * 6. Normalização de elementos de formulário
+ */
+
+*,
+*::before,
+*::after {
+    margin: 0;           /* 1 */
+    padding: 0;          /* 1 */
+    box-sizing: border-box; /* 2 */
+}
+
+html {
+    scroll-behavior: smooth; /* Rolagem suave */
+    text-size-adjust: 100%; /* Previne ajuste de texto em mobile */
+    -webkit-font-smoothing: antialiased; /* Melhora renderização de fontes */
+}
+
+body {
+    min-height: 100vh;   /* Altura mínima = tela inteira */
+    overflow-x: hidden;   /* Previne rolagem horizontal */
+    position: relative;   /* Contexto para elementos absolutos */
+    line-height: 1.5;     /* Espaçamento entre linhas padrão */
+    font-family: sans-serif; /* Fonte segura padrão */
+    background-color: rgb(187, 208, 222);
+}
+
+/* Elementos de bloco */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+/* Listas */
+ol, ul {
+    list-style: none;     /* 3 */
+}
+
+/* Elementos de texto */
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+
+/* Links */
+a {
+    text-decoration: none; /* Remove sublinhado */
+    color: inherit;        /* Herda cor do elemento pai */
+}
+
+/* Elementos de mídia */
+img, picture, video, canvas, svg {
+    display: block;        /* 5 */
+    max-width: 100%;       /* Responsividade */
+    height: auto;          /* Mantém proporção */
+}
+
+/* Formulários */
+button, input, textarea, select {
+    font: inherit;         /* Herda estilos de fonte */
+    background: transparent; /* Remove fundo padrão */
+    border: none;          /* Remove bordas */
+    outline: none;         /* Remove contorno de foco */
+}
+
+/* Tabelas */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* Previne problemas com imagens em links */
+a img {
+    border: none;
+}
+
+/* Remove efeito 3D em botões no iOS */
+button {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Remove setas em inputs number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
