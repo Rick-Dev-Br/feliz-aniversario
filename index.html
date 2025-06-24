@@ -1,4 +1,3 @@
-
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -12,20 +11,28 @@
     <header class="header">
         <h1>TE AMO</h1>
     </header>
+    
     <!-- Hero Section com Carrossel e Frases -->
     <section class="hero">
+    <div class="hero-content"> <!-- Container adicionado -->
         <div class="carousel-container">
-            <div class="carousel">
-                <div class="carousel-slide" style="background-image: url('./dist/images/Maxton-Hall.jpg')"></div>
-                <div class="carousel-slide" style="background-image: url('./dist/images/twilight-2-2fc1097d2074442f8dd41b0d78abbe70.webp')"></div>
-                <div class="carousel-slide" style="background-image: url('./dist/images/stranger_things_1200x630-min.png')"></div>
+        <div class="carousel">
+            <div class="carousel-slide" style="background-image: url('./dist/images/Maxton-Hall.jpg'); background-position: center 30%;">
+                <div class="fallback-text"></div>
             </div>
-            <div class="carousel-controls">
-                <button class="carousel-btn active"></button>
-                <button class="carousel-btn"></button>
-                <button class="carousel-btn"></button>
+            <div class="carousel-slide" style="background-image: url('./dist/images/twilight-2-2fc1097d2074442f8dd41b0d78abbe70.webp'); background-position: center 25%;">
+                <div class="fallback-text"></div>
+            </div>
+            <div class="carousel-slide" style="background-image: url('./dist/images/stranger_things_1200x630-min.png'); background-position: center 40%;">
+                <div class="fallback-text"></div>
             </div>
         </div>
+        <div class="carousel-controls">
+            <button class="carousel-btn active"></button>
+            <button class="carousel-btn"></button>
+            <button class="carousel-btn"></button>
+        </div>
+    </div>
         <div class="quotes">
             <div class="quote active">
                 "Poise tem alguem bem anciosa, então fiz este contador para você minha linda te amo."
@@ -40,7 +47,9 @@
                 <div class="author">- Henrique Seu Amor</div>
             </div>
         </div>
+        </div>
     </section>
+    
     <!-- Seção de Parabéns e Contador -->
     <section class="congrats-section">
         <h1 class="congrats-title">Parabéns!</h1>
@@ -70,17 +79,19 @@
             Meu amor do fundo do meu coração te amo mais que tudo sou pessimo escrevendo entao releva te amo tanto que ate transborda!
         </div>
     </section>
+    
     <audio id="backgroundMusic" loop>
-    <source src="./dist/audio/Alex Warren - Ordinary (Official Video).mp3" type="audio/mpeg">
-    Seu navegador não suporta o elemento de áudio.
-</audio>
-<div id="music-controls">
-    <button id="play-pause-btn"><i class="fas fa-play"></i></button>
-    <div id="volume-container">
-        <i class="fas fa-volume-up"></i>
-        <input type="range" min="0" max="1" step="0.1" value="0.3" id="volume-slider">
+        <source src="./dist/audios/Alex Warren - Ordinary (Official Video).mp3" type="audio/mpeg">
+        Seu navegador não suporta o elemento de áudio.
+    </audio>
+    <div id="music-controls">
+        <button id="play-pause-btn"><i class="fas fa-play"></i></button>
+        <div id="volume-container">
+            <i class="fas fa-volume-up"></i>
+            <input type="range" min="0" max="1" step="0.1" value="0.3" id="volume-slider">
+        </div>
     </div>
-</div>
+    
     <script src="dist/js/main.js"></script>
 </body>
 </html>

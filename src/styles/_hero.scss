@@ -4,10 +4,10 @@
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 40px 20px; /* Aumentado o padding */
     position: relative;
     overflow: hidden;
-
+    
     &::before {
         content: '';
         position: absolute;
@@ -19,7 +19,43 @@
         z-index: 1;
     }
 
+    /* ADICIONE ESTE CONTAINER FLEX */
+    .hero-content {
+        display: flex;
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        gap: 40px;
+        flex-direction: column;
+        z-index: 2; /* Garante que fique acima do pseudo-elemento */
+        
+        @media (min-width: v.$tablet) {
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+
     @media (max-width: v.$tablet) {
         flex-direction: column;
+        
+        .carousel-container {
+            margin-bottom: 30px;
+        }
+    }
+    
+    // Ajustes para o carrossel e frases
+    @media (min-width: v.$tablet) {
+        .carousel-container {
+            flex: 1;
+            height: 70vh;
+            margin-bottom: 0;
+            margin-right: 0;
+        }
+        
+        .quotes {
+            flex: 1;
+            padding: 0;
+            max-width: none;
+        }
     }
 }

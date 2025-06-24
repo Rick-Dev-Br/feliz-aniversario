@@ -1,9 +1,60 @@
+// Adicione esta função para ajustar dinamicamente a altura dos slides
+function adjustSlideHeight() {
+    const carouselContainer = document.querySelector('.carousel-container');
+    const slides = document.querySelectorAll('.carousel-slide');
+    
+    // Reset para todos os dispositivos
+    slides.forEach(slide => {
+        slide.style.height = '';
+    });
+
+    if (carouselContainer) {
+        if (window.innerWidth > 900) {
+            slides.forEach(slide => {
+                slide.style.height = carouselContainer.offsetHeight + 'px';
+            });
+        } else {
+            // Manter altura automática em mobile
+            slides.forEach(slide => {
+                slide.style.height = '';
+            });
+        }
+    }
+}
+
+// ADICIONE ESTE EVENT LISTENER PARA INICIALIZAÇÃO
+window.addEventListener('DOMContentLoaded', () => {
+
+    adjustSlideHeight();
+    initCarousel();
+    
+    // Restante da inicialização...
+});
+
+// Chame a função ao carregar e ao redimensionar a janela
+window.addEventListener('DOMContentLoaded', () => {
+    adjustSlideHeight();
+    // Restante da inicialização...
+});
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    adjustSlideHeight(); // Chama a função de ajuste
+});
+
 // Configuração do carrossel
 const carousel = document.querySelector('.carousel');
 const slides = document.querySelectorAll('.carousel-slide');
 const buttons = document.querySelectorAll('.carousel-btn');
 const quotes = document.querySelectorAll('.quote');
 let currentIndex = 0;
+
+// Inicializar o carrossel
+function initCarousel() {
+    adjustSlideHeight(); // Usa a função global já existente
+    updateCarousel();
+}
 
 function updateCarousel() {
     carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
@@ -50,6 +101,14 @@ canvas.height = window.innerHeight;
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    
+    // Reajustar altura dos slides em dispositivos móveis
+    if (window.innerWidth <= 900) {
+        const carouselContainer = document.querySelector('.carousel-container');
+        slides.forEach(slide => {
+            slide.style.height = carouselContainer.offsetHeight + 'px';
+        });
+    }
 });
 
 // Pool de cores fixa
@@ -277,3 +336,6 @@ function showMusicPrompt() {
 
 // Iniciar controles
 setupMusicControls();
+
+// Inicializar o carrossel quando a página carregar
+window.addEventListener('DOMContentLoaded', initCarousel);

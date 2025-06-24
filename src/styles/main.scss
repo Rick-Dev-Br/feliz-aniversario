@@ -1,9 +1,9 @@
 @use 'variables';
 
-// 2. Importe RESET depois (que usará as variáveis)
+// 1. Importe RESET primeiro
 @use 'reset';
 
-// 3. Demais imports
+// 2. Demais imports
 @use 'animations';
 @use 'hero';
 @use 'carousel';
@@ -11,4 +11,4 @@
 @use 'countdown';  
 @use 'fireworks';
 @use 'header';
-@use 'music'; 
+@use 'music';
