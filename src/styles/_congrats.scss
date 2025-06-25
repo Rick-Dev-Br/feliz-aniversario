@@ -12,7 +12,7 @@
     background: v.$primary-gradient;
 }
 
-.congrats-title span {
+.congrats-title {
     font-family: v.$font-title;
     font-size: 12rem;
     margin-bottom: 30px;
@@ -42,5 +42,19 @@
 
     @media (max-width: v.$mobile) {
         font-size: 1.5rem;
+    }
+}
+
+.congrats-title.celebrating {
+    font-size: 10rem;
+    color: #ff4081;
+    text-shadow: 
+        0 0 20px rgba(255, 64, 129, 0.8),
+        0 0 40px rgba(255, 64, 129, 0.6);
+    animation: pulse 0.7s infinite !important;
+    
+    // CORREÇÃO: usar v.$tablet em vez de variables.$tablet
+    @media (max-width: v.$tablet) {
+        font-size: 7rem;
     }
 }

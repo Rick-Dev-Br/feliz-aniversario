@@ -81,7 +81,7 @@ buttons.forEach((button, index) => {
 setInterval(() => {
     currentIndex = (currentIndex + 1) % slides.length;
     updateCarousel();
-}, 5000);
+}, 6000);
 
 // Sistema de fogos de artifício (usando Canvas para melhor performance)
 const canvas = document.createElement('canvas');
@@ -224,6 +224,7 @@ const specialMessage = document.getElementById('specialMessage');
 function updateCountdown() {
     const now = new Date();
     const difference = birthdayDate - now;
+    const congratsTitle = document.getElementById('congratsTitle'); 
     
     // Se a data já passou
     if (difference <= 0) {
@@ -231,9 +232,14 @@ function updateCountdown() {
         hoursElem.textContent = '00';
         minutesElem.textContent = '00';
         secondsElem.textContent = '00';
+         // ALTERE O TÍTULO
+        congratsTitle.textContent = 'Parabéns!';
+        congratsTitle.style.animation = 'pulse 0.5s infinite'; // Mantém a animação
+        
         
         // Mostrar mensagem especial
         specialMessage.classList.add('show');
+        congratsTitle.classList.add('celebrating');
         
         // Ativar fogos de artifício
         createFireworks();
