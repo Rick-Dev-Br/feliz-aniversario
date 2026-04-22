@@ -1,138 +1,213 @@
-// Adicione esta função para ajustar dinamicamente a altura dos slides
-function adjustSlideHeight() {
-    const carouselContainer = document.querySelector('.carousel-container');
-    const slides = document.querySelectorAll('.carousel-slide');
-    
-    // Reset para todos os dispositivos
-    slides.forEach(slide => {
-        slide.style.height = '';
-    });
+const BIRTHDAY_MONTH_INDEX = 5;
+const BIRTHDAY_DAY = 29;
+const BIRTHDAY_END_HOUR = 23;
+const BIRTHDAY_END_MINUTE = 59;
+const BIRTHDAY_END_SECOND = 59;
+const BIRTHDAY_END_MS = 999;
 
-    if (carouselContainer) {
-        if (window.innerWidth > 900) {
-            slides.forEach(slide => {
-                slide.style.height = carouselContainer.offsetHeight + 'px';
-            });
-        } else {
-            // Manter altura automática em mobile
-            slides.forEach(slide => {
-                slide.style.height = '';
-            });
-        }
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+function getBirthdayForYear(year) {
+    return new Date(year, BIRTHDAY_MONTH_INDEX, BIRTHDAY_DAY, 0, 0, 0);
+}
+
+function getBirthdayEndForYear(year) {
+    return new Date(
+        year,
+        BIRTHDAY_MONTH_INDEX,
+        BIRTHDAY_DAY,
+        BIRTHDAY_END_HOUR,
+        BIRTHDAY_END_MINUTE,
+        BIRTHDAY_END_SECOND,
+        BIRTHDAY_END_MS
+    );
+}
+
+function isBirthdayToday(date) {
+    return date.getMonth() === BIRTHDAY_MONTH_INDEX && date.getDate() === BIRTHDAY_DAY;
+}
+
+function getNextBirthdayDate(fromDate) {
+    const currentYear = fromDate.getFullYear();
+    const birthday = getBirthdayForYear(currentYear);
+    const birthdayEnd = getBirthdayEndForYear(currentYear);
+
+    if (fromDate > birthdayEnd) {
+        return getBirthdayForYear(currentYear + 1);
     }
+
+    return birthday;
 }
 
-// ADICIONE ESTE EVENT LISTENER PARA INICIALIZAÇÃO
-window.addEventListener('DOMContentLoaded', () => {
+function setupCarousel() {
+    const carousel = document.querySelector('.carousel');
+    const slides = document.querySelectorAll('.carousel-slide');
+    const buttons = document.querySelectorAll('.carousel-btn');
+    const quotes = document.querySelectorAll('.quote');
 
-    adjustSlideHeight();
-    initCarousel();
-    
-    // Restante da inicialização...
-});
+    if (!carousel || !slides.length) {
+        return;
+    }
 
-// Chame a função ao carregar e ao redimensionar a janela
-window.addEventListener('DOMContentLoaded', () => {
-    adjustSlideHeight();
-    // Restante da inicialização...
-});
+    let currentIndex = 0;
+    let carouselTimer = null;
 
-window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    adjustSlideHeight(); // Chama a função de ajuste
-});
+    function updateCarousel() {
+        carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
 
-// Configuração do carrossel
-const carousel = document.querySelector('.carousel');
-const slides = document.querySelectorAll('.carousel-slide');
-const buttons = document.querySelectorAll('.carousel-btn');
-const quotes = document.querySelectorAll('.quote');
-let currentIndex = 0;
+        buttons.forEach((button, index) => {
+            button.classList.toggle('active', index === currentIndex);
+            button.setAttribute('aria-current', index === currentIndex ? 'true' : 'false');
+        });
 
-// Inicializar o carrossel
-function initCarousel() {
-    adjustSlideHeight(); // Usa a função global já existente
-    updateCarousel();
-}
-
-function updateCarousel() {
-    carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
-    
-    // Atualiza botões ativos
-    buttons.forEach((btn, index) => {
-        btn.classList.toggle('active', index === currentIndex);
-    });
-    
-    // Atualiza frases ativas
-    quotes.forEach((quote, index) => {
-        quote.classList.toggle('active', index === currentIndex);
-    });
-}
-
-buttons.forEach((button, index) => {
-    button.addEventListener('click', () => {
-        currentIndex = index;
-        updateCarousel();
-    });
-});
-
-// Mudança automática a cada 5 segundos
-setInterval(() => {
-    currentIndex = (currentIndex + 1) % slides.length;
-    updateCarousel();
-}, 6000);
-
-// Sistema de fogos de artifício (usando Canvas para melhor performance)
-const canvas = document.createElement('canvas');
-canvas.style.position = 'fixed';
-canvas.style.top = '0';
-canvas.style.left = '0';
-canvas.style.width = '100%';
-canvas.style.height = '100%';
-canvas.style.pointerEvents = 'none';
-canvas.style.zIndex = '9999';
-document.body.appendChild(canvas);
-
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    // Reajustar altura dos slides em dispositivos móveis
-    if (window.innerWidth <= 900) {
-        const carouselContainer = document.querySelector('.carousel-container');
-        slides.forEach(slide => {
-            slide.style.height = carouselContainer.offsetHeight + 'px';
+        quotes.forEach((quote, index) => {
+            quote.classList.toggle('active', index === currentIndex);
         });
     }
-});
 
-// Pool de cores fixa
+    function goToSlide(index) {
+        currentIndex = index;
+        updateCarousel();
+    }
+
+    function startAutoCarousel() {
+        if (prefersReducedMotion.matches || slides.length <= 1 || carouselTimer) {
+            return;
+        }
+
+        carouselTimer = setInterval(() => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateCarousel();
+        }, 6000);
+    }
+
+    function stopAutoCarousel() {
+        clearInterval(carouselTimer);
+        carouselTimer = null;
+    }
+
+    buttons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+            goToSlide(index);
+            stopAutoCarousel();
+            startAutoCarousel();
+        });
+    });
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            stopAutoCarousel();
+            return;
+        }
+
+        startAutoCarousel();
+    });
+
+    updateCarousel();
+    startAutoCarousel();
+}
+
+const daysElem = document.getElementById('days');
+const hoursElem = document.getElementById('hours');
+const minutesElem = document.getElementById('minutes');
+const secondsElem = document.getElementById('seconds');
+const specialMessage = document.getElementById('specialMessage');
+const congratsTitle = document.getElementById('congratsTitle');
+let hasStartedCelebration = false;
+
+function updateCountdownValue(element, value) {
+    if (element) {
+        element.textContent = value.toString().padStart(2, '0');
+    }
+}
+
+function showCelebration() {
+    updateCountdownValue(daysElem, 0);
+    updateCountdownValue(hoursElem, 0);
+    updateCountdownValue(minutesElem, 0);
+    updateCountdownValue(secondsElem, 0);
+
+    if (congratsTitle) {
+        congratsTitle.textContent = 'Parabéns!';
+        congratsTitle.classList.add('celebrating');
+    }
+
+    if (specialMessage) {
+        specialMessage.classList.add('show');
+    }
+
+    if (!hasStartedCelebration) {
+        hasStartedCelebration = true;
+        createFireworks();
+    }
+}
+
+function updateCountdown() {
+    const now = new Date();
+
+    if (isBirthdayToday(now)) {
+        showCelebration();
+        return;
+    }
+
+    const birthdayDate = getNextBirthdayDate(now);
+    const difference = birthdayDate - now;
+
+    if (difference <= 0) {
+        showCelebration();
+        return;
+    }
+
+    const totalSeconds = Math.floor(difference / 1000);
+    const days = Math.floor(totalSeconds / (3600 * 24));
+    const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    updateCountdownValue(daysElem, days);
+    updateCountdownValue(hoursElem, hours);
+    updateCountdownValue(minutesElem, minutes);
+    updateCountdownValue(secondsElem, seconds);
+
+    if (congratsTitle && days === 0 && hours === 0 && minutes < 1) {
+        congratsTitle.classList.add('celebrating');
+    }
+}
+
 const COLORS = [
-    '#ff0000', '#00ff00', '#0000ff', '#ffff00',
-    '#00ffff', '#ff00ff', '#ff9900', '#ff0099'
+    '#ffd782',
+    '#fff8ef',
+    '#f28a63',
+    '#d84d6b',
+    '#9be7ff',
+    '#b8f7c9'
 ];
+const MAX_EXPLOSIONS = 8;
+const PARTICLE_COUNT = 44;
+const EXPLOSION_DURATION = 1500;
 
-// Estrutura de dados para partículas
+let canvas = null;
+let ctx = null;
+let animationFrameId = null;
+let fireworksIntervalId = null;
+let fireworksTimeoutId = null;
+
 class Particle {
     constructor(x, y) {
         this.x = x;
         this.y = y;
         this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
         this.angle = Math.random() * Math.PI * 2;
-        this.speed = Math.random() * 5 + 2;
-        this.size = Math.random() * 4 + 2;
+        this.speed = Math.random() * 4 + 1.5;
+        this.size = Math.random() * 3 + 1.5;
         this.alpha = 1;
-        this.decay = 0.015;
+        this.decay = 0.018;
+        this.gravity = 0.035;
     }
 
     update() {
         this.x += Math.cos(this.angle) * this.speed;
-        this.y += Math.sin(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed + this.gravity;
         this.alpha -= this.decay;
         return this.alpha > 0;
     }
@@ -146,17 +221,19 @@ class Particle {
     }
 }
 
-// Gerenciador de explosões
 class ExplosionManager {
     constructor() {
         this.activeExplosions = [];
     }
 
     createExplosion(x, y) {
-        if (this.activeExplosions.length >= MAX_EXPLOSIONS) return;
+        if (this.activeExplosions.length >= MAX_EXPLOSIONS) {
+            return;
+        }
 
         const particles = [];
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
+
+        for (let index = 0; index < PARTICLE_COUNT; index++) {
             particles.push(new Particle(x, y));
         }
 
@@ -166,182 +243,182 @@ class ExplosionManager {
         });
     }
 
+    hasActiveExplosions() {
+        return this.activeExplosions.length > 0;
+    }
+
     update() {
-        for (let i = this.activeExplosions.length - 1; i >= 0; i--) {
-            const explosion = this.activeExplosions[i];
+        for (let index = this.activeExplosions.length - 1; index >= 0; index--) {
+            const explosion = this.activeExplosions[index];
             let activeParticles = 0;
 
-            for (const particle of explosion.particles) {
-                if (particle.update()) activeParticles++;
-            }
+            explosion.particles.forEach((particle) => {
+                if (particle.update()) {
+                    activeParticles++;
+                }
+            });
 
             const isExpired = Date.now() - explosion.createdAt > EXPLOSION_DURATION;
+
             if (activeParticles === 0 || isExpired) {
-                this.activeExplosions.splice(i, 1);
+                this.activeExplosions.splice(index, 1);
             }
         }
     }
 
     draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (const explosion of this.activeExplosions) {
-            for (const particle of explosion.particles) {
-                particle.draw();
-            }
+        if (!ctx || !canvas) {
+            return;
         }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this.activeExplosions.forEach((explosion) => {
+            explosion.particles.forEach((particle) => particle.draw());
+        });
+        ctx.globalAlpha = 1;
     }
 }
 
-// Configurações
-const MAX_EXPLOSIONS = 15;
-const PARTICLE_COUNT = 70;
-const EXPLOSION_DURATION = 2000;
 const explosionManager = new ExplosionManager();
 
-// Função para criar fogos de artifício
-function createFireworks() {
-    // Criar fogos aleatórios pela tela
-    const interval = setInterval(() => {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height * 0.6;
-        explosionManager.createExplosion(x, y);
-    }, 500);
-    
-    // Parar após 30 segundos (para não sobrecarregar)
-    setTimeout(() => clearInterval(interval), 30000);
-}
-
-// Contador Regressivo para o Aniversário - CORRIGIDO
-const birthdayDate = new Date(2025, 5, 29, 0, 0, 0); // Forma correta de criar a data
-
-const daysElem = document.getElementById('days');
-const hoursElem = document.getElementById('hours');
-const minutesElem = document.getElementById('minutes');
-const secondsElem = document.getElementById('seconds');
-const specialMessage = document.getElementById('specialMessage');
-
-// Função updateCountdown ÚNICA e COMPLETA
-function updateCountdown() {
-    const now = new Date();
-    const difference = birthdayDate - now;
-    const congratsTitle = document.getElementById('congratsTitle'); 
-    
-    // Se a data já passou
-    if (difference <= 0) {
-        daysElem.textContent = '00';
-        hoursElem.textContent = '00';
-        minutesElem.textContent = '00';
-        secondsElem.textContent = '00';
-         // ALTERE O TÍTULO
-        congratsTitle.textContent = 'Parabéns!';
-        congratsTitle.style.animation = 'pulse 0.5s infinite'; // Mantém a animação
-        
-        
-        // Mostrar mensagem especial
-        specialMessage.classList.add('show');
-        congratsTitle.classList.add('celebrating');
-        
-        // Ativar fogos de artifício
-        createFireworks();
+function resizeCanvas() {
+    if (!canvas || !ctx) {
         return;
     }
-    
-    // Cálculos de tempo
-    const totalSeconds = Math.floor(difference / 1000);
-    const days = Math.floor(totalSeconds / (3600 * 24));
-    const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    
-    // Atualizar elementos
-    daysElem.textContent = days.toString().padStart(2, '0');
-    hoursElem.textContent = hours.toString().padStart(2, '0');
-    minutesElem.textContent = minutes.toString().padStart(2, '0');
-    secondsElem.textContent = seconds.toString().padStart(2, '0');
-    
-    // Se faltar menos de 1 minuto, animação especial
-    if (days === 0 && hours === 0 && minutes < 1) {
-        document.querySelector('.congrats-title').style.animation = 'pulse 0.5s infinite';
-    }
+
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    canvas.width = Math.floor(width * ratio);
+    canvas.height = Math.floor(height * ratio);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
 }
 
-// Iniciar contador
-updateCountdown();
-setInterval(updateCountdown, 1000);
+function setupFireworksCanvas() {
+    if (canvas) {
+        return;
+    }
 
-// Loop de animação
-function animate() {
+    canvas = document.createElement('canvas');
+    canvas.className = 'fireworks-canvas';
+    document.body.appendChild(canvas);
+    ctx = canvas.getContext('2d');
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas, { passive: true });
+}
+
+function animateFireworks() {
     explosionManager.update();
     explosionManager.draw();
-    requestAnimationFrame(animate);
+
+    if (!explosionManager.hasActiveExplosions() && !fireworksIntervalId) {
+        animationFrameId = null;
+        return;
+    }
+
+    animationFrameId = requestAnimationFrame(animateFireworks);
 }
-animate();
 
-// Sistema de música de fundo
-const backgroundMusic = document.getElementById('backgroundMusic');
-const playPauseBtn = document.getElementById('play-pause-btn');
-const volumeSlider = document.getElementById('volume-slider');
-let musicStarted = false;
-
-// Função para iniciar/pausar música
-function toggleMusic() {
-    if (backgroundMusic.paused) {
-        backgroundMusic.play();
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-    } else {
-        backgroundMusic.pause();
-        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+function startFireworksLoop() {
+    if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(animateFireworks);
     }
 }
 
-// Configurar controles de música
-function setupMusicControls() {
-    // Evento play/pause
-    playPauseBtn.addEventListener('click', toggleMusic);
-    
-    // Evento de volume
-    volumeSlider.addEventListener('input', () => {
-        backgroundMusic.volume = volumeSlider.value;
-    });
-    
-    // Verificar suporte a autoplay
-    backgroundMusic.play()
-        .then(() => {
-            musicStarted = true;
-            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        })
-        .catch(error => {
-            console.log("Autoplay bloqueado:", error);
-            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-            showMusicPrompt();
-        });
+function createFireworks() {
+    if (prefersReducedMotion.matches || fireworksIntervalId) {
+        return;
+    }
+
+    setupFireworksCanvas();
+
+    function addRandomExplosion() {
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight * 0.62;
+        explosionManager.createExplosion(x, y);
+        startFireworksLoop();
+    }
+
+    addRandomExplosion();
+    fireworksIntervalId = setInterval(addRandomExplosion, 700);
+
+    clearTimeout(fireworksTimeoutId);
+    fireworksTimeoutId = setTimeout(() => {
+        clearInterval(fireworksIntervalId);
+        fireworksIntervalId = null;
+    }, 18000);
 }
 
-// Mostrar prompt se autoplay bloqueado
+const backgroundMusic = document.getElementById('backgroundMusic');
+const playPauseBtn = document.getElementById('play-pause-btn');
+const playPauseIcon = playPauseBtn ? playPauseBtn.querySelector('span') : null;
+const volumeSlider = document.getElementById('volume-slider');
+
+function setMusicButtonState(isPlaying) {
+    if (!playPauseBtn || !playPauseIcon) {
+        return;
+    }
+
+    playPauseIcon.textContent = isPlaying ? '❚❚' : '▶';
+    playPauseBtn.setAttribute('aria-label', isPlaying ? 'Pausar música' : 'Tocar música');
+}
+
 function showMusicPrompt() {
+    if (document.getElementById('music-prompt')) {
+        return;
+    }
+
     const prompt = document.createElement('div');
     prompt.id = 'music-prompt';
-    prompt.innerHTML = 'Clique no botão play para ativar a música';
-    prompt.style.position = 'fixed';
-    prompt.style.bottom = '80px';
-    prompt.style.right = '20px';
-    prompt.style.backgroundColor = 'rgba(0,0,0,0.7)';
-    prompt.style.color = 'white';
-    prompt.style.padding = '10px';
-    prompt.style.borderRadius = '5px';
-    prompt.style.zIndex = '10000';
-    prompt.style.fontSize = '0.9rem';
-    
+    prompt.textContent = 'Toque no botão para ativar a música.';
     document.body.appendChild(prompt);
-    
-    // Remover após 5 segundos
+
     setTimeout(() => {
         prompt.remove();
-    }, 5000);
+    }, 4500);
 }
 
-// Iniciar controles
-setupMusicControls();
+function toggleMusic() {
+    if (!backgroundMusic || !playPauseBtn) {
+        return;
+    }
 
-// Inicializar o carrossel quando a página carregar
-window.addEventListener('DOMContentLoaded', initCarousel);
+    if (backgroundMusic.paused) {
+        backgroundMusic.play()
+            .then(() => setMusicButtonState(true))
+            .catch(() => {
+                setMusicButtonState(false);
+                showMusicPrompt();
+            });
+        return;
+    }
+
+    backgroundMusic.pause();
+    setMusicButtonState(false);
+}
+
+function setupMusicControls() {
+    if (!backgroundMusic || !playPauseBtn || !volumeSlider) {
+        return;
+    }
+
+    backgroundMusic.volume = Number(volumeSlider.value);
+    setMusicButtonState(false);
+
+    playPauseBtn.addEventListener('click', toggleMusic);
+    volumeSlider.addEventListener('input', () => {
+        backgroundMusic.volume = Number(volumeSlider.value);
+    });
+}
+
+function init() {
+    setupCarousel();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+    setupMusicControls();
+}
+
+document.addEventListener('DOMContentLoaded', init);

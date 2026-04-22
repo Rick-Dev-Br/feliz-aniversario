@@ -1,87 +1,108 @@
+@use 'variables' as v;
+
 #music-controls {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    right: 18px;
+    bottom: 18px;
+    z-index: 10000;
     display: flex;
     align-items: center;
-    gap: 15px;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 12px 20px;
-    border-radius: 50px;
-    z-index: 10000;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    transform: translateY(0);
-    transition: all 0.3s ease;
-    
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 215, 130, 0.34);
+    border-radius: 8px;
+    background: rgba(18, 13, 25, 0.78);
+    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(14px);
+    transition: background 0.25s ease, transform 0.25s ease;
+
     &:hover {
-        background: rgba(0, 0, 0, 0.85);
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        background: rgba(18, 13, 25, 0.92);
+        transform: translateY(-2px);
     }
-    
-    #play-pause-btn {
-        background: gold;
-        border: none;
-        width: 40px;
-        height: 40px;
+
+    @media (max-width: v.$mobile) {
+        right: 12px;
+        bottom: 12px;
+    }
+}
+
+#play-pause-btn {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background: v.$gold;
+    color: v.$ink;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1;
+    transition: transform 0.2s ease, background 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+        background: #ffe0a0;
+        outline: none;
+        transform: scale(1.06);
+    }
+}
+
+#volume-container {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.volume-icon {
+    color: v.$gold;
+    font-size: 1rem;
+    font-weight: 900;
+}
+
+#volume-slider {
+    width: 86px;
+    height: 6px;
+    appearance: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.22);
+    cursor: pointer;
+    outline: none;
+
+    &::-webkit-slider-thumb {
+        width: 16px;
+        height: 16px;
+        appearance: none;
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        
-        &:hover {
-            transform: scale(1.1);
-            background: #ffc800;
-        }
-        
-        i {
-            color: #333;
-            font-size: 16px;
-        }
+        background: v.$gold;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
     }
-    
-    #volume-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        
-        i {
-            color: gold;
-            font-size: 18px;
-        }
-        
-        #volume-slider {
-            width: 80px;
-            height: 6px;
-            appearance: none;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 3px;
-            outline: none;
-            
-            &::-webkit-slider-thumb {
-                appearance: none;
-                width: 16px;
-                height: 16px;
-                border-radius: 50%;
-                background: gold;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                
-                &:hover {
-                    transform: scale(1.2);
-                }
-            }
-        }
+
+    &::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        border: 0;
+        border-radius: 50%;
+        background: v.$gold;
     }
 }
 
 #music-prompt {
-    animation: pulse 2s infinite;
-    font-size: 0.9rem;
-    max-width: 200px;
+    position: fixed;
+    right: 18px;
+    bottom: 78px;
+    z-index: 10000;
+    max-width: 220px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 215, 130, 0.34);
+    border-radius: 8px;
+    color: v.$light;
+    background: rgba(18, 13, 25, 0.86);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+    font-size: 0.84rem;
     text-align: center;
+    animation: fadeUp 0.35s ease both;
 }

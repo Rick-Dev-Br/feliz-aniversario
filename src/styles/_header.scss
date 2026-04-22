@@ -1,21 +1,43 @@
-@use 'animations' as v;
+@use 'variables' as v;
 
 .header {
     display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center;     /* Centraliza verticalmente */
-    height: 20vh;           /* Altura adequada para visualização */
-    background: linear-gradient(135deg, #1a2a6c, #e6badd, #988252); /* Gradiente bonito */
-    text-align: center;      /* Centralização adicional para texto */
-    padding: 20px;           /* Espaçamento interno */
-    
+    min-height: 150px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 24px 20px;
+    text-align: center;
+    background:
+        linear-gradient(90deg, rgba(255, 215, 130, 0.18), transparent 28%, rgba(255, 255, 255, 0.12) 50%, transparent 72%, rgba(242, 138, 99, 0.22)),
+        v.$primary-gradient;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+
     h1 {
-        font-family: 'Birthstone', cursive; /* Fonte especial */
-        font-size: 5rem;      /* Tamanho grande */
-        color: #ffd700;       /* Cor dourada */
-        text-shadow: 0 0 20px rgba(0, 0, 0, 0.7); /* Sombra para destaque */
-        margin: 0;            /* Remove margens padrão */
-        padding: 0;           /* Remove paddings padrão */
-        animation: pulse 2s infinite; /* Animação suave */
+        color: v.$gold;
+        font-family: v.$font-title;
+        font-size: 5rem;
+        font-weight: 400;
+        line-height: 0.9;
+        text-transform: none;
+        text-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+        animation: pulse 3s ease-in-out infinite;
     }
+
+    @media (max-width: v.$mobile) {
+        min-height: 128px;
+
+        h1 {
+            font-size: 4rem;
+        }
+    }
+}
+
+.header__eyebrow {
+    color: rgba(255, 248, 239, 0.78);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
 }

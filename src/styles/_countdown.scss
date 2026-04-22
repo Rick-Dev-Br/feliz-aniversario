@@ -1,57 +1,60 @@
 @use 'variables' as v;
 
 .countdown {
-    display: flex;
-    gap: 30px;
-    margin-bottom: 40px;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    width: min(100%, 860px);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0 auto 36px;
+
+    @media (max-width: v.$mobile) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 .countdown-item {
     display: flex;
+    min-height: 142px;
     flex-direction: column;
     align-items: center;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 25px;
-    border-radius: 15px;
-    min-width: 140px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    justify-content: center;
+    padding: 20px 12px;
+    border: 1px solid v.$border-soft;
+    border-radius: 8px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.17), rgba(255, 255, 255, 0.07)),
+        rgba(255, 255, 255, 0.08);
+    box-shadow: v.$shadow-card;
+    backdrop-filter: blur(14px);
+    animation: softGlow 5s ease-in-out infinite;
 
     @media (max-width: v.$tablet) {
-        min-width: 100px;
-        padding: 15px;
-    }
-
-    @media (max-width: v.$mobile) {
-        min-width: 70px;
-        padding: 10px;
+        min-height: 118px;
     }
 }
 
 .countdown-number {
-    font-size: 4rem;
-    font-weight: 700;
-    margin-bottom: 10px;
     color: v.$gold;
+    font-size: 3.4rem;
+    font-weight: 900;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
 
     @media (max-width: v.$tablet) {
-        font-size: 2.5rem;
+        font-size: 2.7rem;
     }
 
     @media (max-width: v.$mobile) {
-        font-size: 2rem;
+        font-size: 2.35rem;
     }
 }
 
 .countdown-label {
-    font-size: 1.2rem;
+    margin-top: 12px;
+    color: rgba(255, 248, 239, 0.76);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    letter-spacing: 2px;
-
-    @media (max-width: v.$mobile) {
-        font-size: 0.9rem;
-    }
 }
